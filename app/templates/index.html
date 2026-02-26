@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ATS Resume Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎯 ATS Resume Agent</h1>
+        <p class="subtitle">AI-Powered Resume Optimization & Job Match Analysis by Bharat</p>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('text-tab')">✍️ Text Input</button>
+            <button class="tab-button" onclick="switchTab('file-tab')">📁 Upload Files</button>
+        </div>
+
+
+        <div id="text-tab" class="tab-content active">
+            <div class="form-section">
+                <form id="resumeForm">
+                    <div class="input-group">
+                        <label for="resume">📄 Your Resume</label>
+                        <textarea id="resume" placeholder="Paste your resume here..." required></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="jd">🎯 Job Description</label>
+                        <textarea id="jd" placeholder="Paste the job description here..." required></textarea>
+                    </div>
+
+                    <button type="submit">⚡ Analyze Resume</button>
+                </form>
+            </div>
+        </div>
+
+
+        <div id="file-tab" class="tab-content">
+            <div class="form-section">
+                <div class="input-group">
+                    <label>📄 Upload Resume</label>
+                    <div class="file-upload-area" id="resumeDropZone">
+                        <input type="file" id="resumeFile" accept=".pdf,.docx,.doc,.txt">
+                        <div class="upload-icon">📤</div>
+                        <div class="upload-text-main">Drag & drop or click to upload</div>
+                        <div class="upload-text-sub">Supported: PDF, DOCX, DOC, TXT (Max 16MB)</div>
+                        <div id="resumeFileInfo"></div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>🎯 Upload Job Description</label>
+                    <div class="file-upload-area" id="jdDropZone">
+                        <input type="file" id="jdFile" accept=".pdf,.docx,.doc,.txt">
+                        <div class="upload-icon">📤</div>
+                        <div class="upload-text-main">Drag & drop or click to upload</div>
+                        <div class="upload-text-sub">Supported: PDF, DOCX, DOC, TXT (Max 16MB)</div>
+                        <div id="jdFileInfo"></div>
+                    </div>
+                </div>
+
+                <button type="button" onclick="analyzeFromFiles()">⚡ Analyze Files</button>
+                <button type="button" class="clear-btn" onclick="clearFiles()">🗑️ Clear Files</button>
+
+                <div id="fileError"></div>
+                <div id="fileSuccess"></div>
+            </div>
+        </div>
+
+
+        <div id="resultsContainer" style="display:none;">
+            <div class="results-section">
+                <div class="score-box">
+                    <h2>Overall Match Score</h2>
+                    <div class="score-value" id="finalScore">0</div>
+                    <div style="color: #aaa; font-size: 1.3em;">/ 10,000</div>
+                    <div class="percentage" id="percentageMatch">0%</div>
+                    <div id="assessment" class="assessment-badge"></div>
+                </div>
+
+                <h3 style="color: #00d4ff; margin-top: 30px;">📊 Score Breakdown</h3>
+                <div class="breakdown">
+                    <div class="score-card">
+                        <h4>📌 Keyword Match</h4>
+                        <div class="value" id="keywordScore">0</div>
+                        <div class="weight">/ 4,000 (40% weight)</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="keywordBar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="score-card">
+                        <h4>🧠 Semantic Match</h4>
+                        <div class="value" id="semanticScore">0</div>
+                        <div class="weight">/ 3,000 (30% weight)</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="semanticBar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="score-card">
+                        <h4>📋 Format Quality</h4>
+                        <div class="value" id="formatScore">0</div>
+                        <div class="weight">/ 2,000 (20% weight)</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="formatBar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="score-card">
+                        <h4>⭐ Bullet Quality</h4>
+                        <div class="value" id="bulletScore">0</div>
+                        <div class="weight">/ 1,000 (10% weight)</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="bulletBar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-suggestions">
+                    <h4>💡 AI Suggestions</h4>
+                    <div id="suggestions">Loading recommendations...</div>
+                </div>
+
+                <div class="status">✓ Server Status: Online</div>
+            </div>
+        </div>
+
+        <div id="initialState" style="text-align: center; margin-top: 80px; color: #666;">
+            <p style="font-size: 1.3em;">👆 Enter your resume and job description to get started</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+
+</html>
